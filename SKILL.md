@@ -1,5 +1,5 @@
 ---
-name: dynamic-two-way-flowchar
+name: dynamic-two-way-flowchart
 description: Generate dark tech-style animated flowcharts with bidirectional data-packet particles. Use for dynamic flowcharts, architecture flow, end-to-end call chains, data-flow diagrams. Do not use for static diagrams.
 ---
 
