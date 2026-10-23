@@ -1,16 +1,96 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 720 540" role="img" aria-label="双向动态流程图模板">
   <style>
     text { font-family: "PingFang SC", "SF Pro Text", system-ui, sans-serif; }
-    .nodeText { fill: #E8EEF7; font-size: 14px; font-weight: 500; }
-    .nodeSub { fill: #8FA3BF; font-size: 12px; }
-    .nodeAccent { fill: #5FE3D2; font-size: 12px; font-weight: 500; }
-    .labBlue { fill: #7FB0FF; font-size: 12px; font-weight: 500; }
-    .labTeal { fill: #5FE3D2; font-size: 12px; font-weight: 500; }
-    .labGreen { fill: #3EF08C; font-size: 12px; font-weight: 500; }
-    .labMuted { fill: #7A8CA8; font-size: 12px; }
+    /* 深色主题（默认） */
+    :root {
+      --c-bg: #0B1220;
+      --c-grid: rgba(96,165,250,0.12);
+      --c-node: #101A2E;
+      --c-node-line: #3A4A63;
+      --c-core: #0E2B1F;
+      --c-green: #3EF08C;
+      --c-blue: #4F8EF7;
+      --c-teal: #2DD4BF;
+      --c-ret: #4A5B73;
+      --c-ret-glow: #5A6B88;
+      --c-ret-core: #7A8CA8;
+      --c-text: #E8EEF7;
+      --c-sub: #8FA3BF;
+      --c-accent: #5FE3D2;
+      --c-lab-blue: #7FB0FF;
+      --c-hud: #2C3E58;
+    }
+    /* 浅色主题（手动） */
+    :root[data-theme="light"] {
+      --c-bg: #F4F7FB;
+      --c-grid: rgba(59,130,246,0.07);
+      --c-node: #FFFFFF;
+      --c-node-line: #CBD5E1;
+      --c-core: #E7F6EE;
+      --c-green: #10B981;
+      --c-blue: #3B82F6;
+      --c-teal: #0D9488;
+      --c-ret: #94A3B8;
+      --c-ret-glow: #94A3B8;
+      --c-ret-core: #64748B;
+      --c-text: #1E293B;
+      --c-sub: #64748B;
+      --c-accent: #0D9488;
+      --c-lab-blue: #2563EB;
+      --c-hud: #CBD5E1;
+    }
+    /* 深色主题（手动覆盖系统） */
+    :root[data-theme="dark"] {
+      --c-bg: #0B1220;
+      --c-grid: rgba(96,165,250,0.12);
+      --c-node: #101A2E;
+      --c-node-line: #3A4A63;
+      --c-core: #0E2B1F;
+      --c-green: #3EF08C;
+      --c-blue: #4F8EF7;
+      --c-teal: #2DD4BF;
+      --c-ret: #4A5B73;
+      --c-ret-glow: #5A6B88;
+      --c-ret-core: #7A8CA8;
+      --c-text: #E8EEF7;
+      --c-sub: #8FA3BF;
+      --c-accent: #5FE3D2;
+      --c-lab-blue: #7FB0FF;
+      --c-hud: #2C3E58;
+    }
+    /* 跟随系统：系统为浅色且未手动指定时用浅色 */
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]):not([data-theme="light"]) {
+        --c-bg: #F4F7FB;
+        --c-grid: rgba(59,130,246,0.07);
+        --c-node: #FFFFFF;
+        --c-node-line: #CBD5E1;
+        --c-core: #E7F6EE;
+        --c-green: #10B981;
+        --c-blue: #3B82F6;
+        --c-teal: #0D9488;
+        --c-ret: #94A3B8;
+        --c-ret-glow: #94A3B8;
+        --c-ret-core: #64748B;
+        --c-text: #1E293B;
+        --c-sub: #64748B;
+        --c-accent: #0D9488;
+        --c-lab-blue: #2563EB;
+        --c-hud: #CBD5E1;
+      }
+    }
+    .nodeText { fill: var(--c-text); font-size: 14px; font-weight: 500; }
+    .nodeSub { fill: var(--c-sub); font-size: 12px; }
+    .nodeAccent { fill: var(--c-accent); font-size: 12px; font-weight: 500; }
+    .labBlue { fill: var(--c-lab-blue); font-size: 12px; font-weight: 500; }
+    .labTeal { fill: var(--c-accent); font-size: 12px; font-weight: 500; }
+    .labGreen { fill: var(--c-green); font-size: 12px; font-weight: 500; }
+    .labMuted { fill: var(--c-ret-core); font-size: 12px; }
     .flow { stroke-dasharray: 6 10; animation: dashFlow 0.7s linear infinite; }
     .pulse { animation: pulse 1.8s ease-in-out infinite; }
     .blink { animation: blink 1.6s ease-in-out infinite; }
+    .themeBtn { cursor: pointer; }
+    .themeBtn:hover { opacity: 0.85; }
     @keyframes dashFlow { to { stroke-dashoffset: -32; } }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
@@ -18,146 +98,146 @@
   </style>
   <defs>
     <pattern id="grid" width="26" height="26" patternUnits="userSpaceOnUse">
-      <circle cx="13" cy="13" r="1.0" fill="rgba(96,165,250,0.12)" />
+      <circle cx="13" cy="13" r="1.0" fill="var(--c-grid)" />
     </pattern>
     <marker id="arrBlue" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M1 1 L7 4 L1 7 Z" fill="#4F8EF7" />
+      <path d="M1 1 L7 4 L1 7 Z" fill="var(--c-blue)" />
     </marker>
     <marker id="arrTeal" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M1 1 L7 4 L1 7 Z" fill="#2DD4BF" />
+      <path d="M1 1 L7 4 L1 7 Z" fill="var(--c-teal)" />
     </marker>
     <marker id="arrGreen" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M1 1 L7 4 L1 7 Z" fill="#3EF08C" />
+      <path d="M1 1 L7 4 L1 7 Z" fill="var(--c-green)" />
     </marker>
     <marker id="arrRet" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M1 1 L7 4 L1 7 Z" fill="#5A6B88" />
+      <path d="M1 1 L7 4 L1 7 Z" fill="var(--c-ret-glow)" />
     </marker>
   </defs>
 
-  <rect x="0" y="0" width="720" height="540" fill="#0B1220" />
+  <rect x="0" y="0" width="720" height="540" fill="var(--c-bg)" />
   <rect x="0" y="0" width="720" height="540" fill="url(#grid)" />
 
-  <path d="M14 40 V14 H40" fill="none" stroke="#2C3E58" stroke-width="1.2" stroke-linecap="round" />
-  <path d="M680 40 V14 H706" fill="none" stroke="#2C3E58" stroke-width="1.2" stroke-linecap="round" />
-  <path d="M14 500 V526 H40" fill="none" stroke="#2C3E58" stroke-width="1.2" stroke-linecap="round" />
-  <path d="M680 500 V526 H706" fill="none" stroke="#2C3E58" stroke-width="1.2" stroke-linecap="round" />
+  <path d="M14 40 V14 H40" fill="none" stroke="var(--c-hud)" stroke-width="1.2" stroke-linecap="round" />
+  <path d="M680 40 V14 H706" fill="none" stroke="var(--c-hud)" stroke-width="1.2" stroke-linecap="round" />
+  <path d="M14 500 V526 H40" fill="none" stroke="var(--c-hud)" stroke-width="1.2" stroke-linecap="round" />
+  <path d="M680 500 V526 H706" fill="none" stroke="var(--c-hud)" stroke-width="1.2" stroke-linecap="round" />
 
-  <path class="flow" d="M90 80 L115 198" fill="none" stroke="#4F8EF7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrBlue)" />
-  <path class="flow" d="M190 212 L308 82" fill="none" stroke="#4F8EF7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrBlue)" />
-  <path d="M192 62 L120 198" fill="none" stroke="#4A5B73" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
-  <path class="flow" d="M190 235 H320" fill="none" stroke="#2DD4BF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrTeal)" />
-  <path class="flow" d="M480 215 L568 85" fill="none" stroke="#2DD4BF" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrTeal)" />
-  <path d="M568 110 L482 245" fill="none" stroke="#4A5B73" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
-  <path d="M320 245 H192" fill="none" stroke="#4A5B73" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
-  <path class="flow" d="M190 295 H320" fill="none" stroke="#3EF08C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrGreen)" />
-  <path class="flow" d="M480 285 L568 135" fill="none" stroke="#3EF08C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrGreen)" />
-  <path d="M568 160 L482 305" fill="none" stroke="#4A5B73" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
-  <path class="flow" d="M480 315 L568 415" fill="none" stroke="#3EF08C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrGreen)" />
-  <path d="M568 445 L482 330" fill="none" stroke="#4A5B73" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
-  <path d="M320 330 H192" fill="none" stroke="#4A5B73" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
+  <path class="flow" d="M90 80 L115 198" fill="none" stroke="var(--c-blue)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrBlue)" />
+  <path class="flow" d="M190 212 L308 82" fill="none" stroke="var(--c-blue)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrBlue)" />
+  <path d="M192 62 L120 198" fill="none" stroke="var(--c-ret)" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
+  <path class="flow" d="M190 235 H320" fill="none" stroke="var(--c-teal)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrTeal)" />
+  <path class="flow" d="M480 215 L568 85" fill="none" stroke="var(--c-teal)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrTeal)" />
+  <path d="M568 110 L482 245" fill="none" stroke="var(--c-ret)" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
+  <path d="M320 245 H192" fill="none" stroke="var(--c-ret)" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
+  <path class="flow" d="M190 295 H320" fill="none" stroke="var(--c-green)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrGreen)" />
+  <path class="flow" d="M480 285 L568 135" fill="none" stroke="var(--c-green)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrGreen)" />
+  <path d="M568 160 L482 305" fill="none" stroke="var(--c-ret)" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
+  <path class="flow" d="M480 315 L568 415" fill="none" stroke="var(--c-green)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrGreen)" />
+  <path d="M568 445 L482 330" fill="none" stroke="var(--c-ret)" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
+  <path d="M320 330 H192" fill="none" stroke="var(--c-ret)" stroke-width="1.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 7" marker-end="url(#arrRet)" />
 
   <g class="particles">
     <g>
       <animateMotion dur="1.4s" begin="0s" repeatCount="indefinite" path="M90 80 L115 198" />
-      <circle r="4" fill="#4F8EF7" opacity="0.20" />
-      <circle r="2" fill="#4F8EF7" />
+      <circle r="4" fill="var(--c-blue)" opacity="0.20" />
+      <circle r="2" fill="var(--c-blue)" />
     </g>
     <g>
       <animateMotion dur="1.5s" begin="0.14s" repeatCount="indefinite" path="M190 212 L308 82" />
-      <circle r="4" fill="#4F8EF7" opacity="0.20" />
-      <circle r="2" fill="#4F8EF7" />
+      <circle r="4" fill="var(--c-blue)" opacity="0.20" />
+      <circle r="2" fill="var(--c-blue)" />
     </g>
     <g>
       <animateMotion dur="1.5s" begin="0.28s" repeatCount="indefinite" path="M192 62 L120 198" />
-      <circle r="3.5" fill="#5A6B88" opacity="0.16" />
-      <circle r="1.8" fill="#7A8CA8" />
+      <circle r="3.5" fill="var(--c-ret-glow)" opacity="0.16" />
+      <circle r="1.8" fill="var(--c-ret-core)" />
     </g>
     <g>
       <animateMotion dur="1.3s" begin="0.42s" repeatCount="indefinite" path="M190 235 H320" />
-      <circle r="4" fill="#2DD4BF" opacity="0.20" />
-      <circle r="2" fill="#2DD4BF" />
+      <circle r="4" fill="var(--c-teal)" opacity="0.20" />
+      <circle r="2" fill="var(--c-teal)" />
     </g>
     <g>
       <animateMotion dur="1.5s" begin="0.56s" repeatCount="indefinite" path="M480 215 L568 85" />
-      <circle r="4" fill="#2DD4BF" opacity="0.20" />
-      <circle r="2" fill="#2DD4BF" />
+      <circle r="4" fill="var(--c-teal)" opacity="0.20" />
+      <circle r="2" fill="var(--c-teal)" />
     </g>
     <g>
       <animateMotion dur="1.5s" begin="0.7s" repeatCount="indefinite" path="M568 110 L482 245" />
-      <circle r="3.5" fill="#5A6B88" opacity="0.16" />
-      <circle r="1.8" fill="#7A8CA8" />
+      <circle r="3.5" fill="var(--c-ret-glow)" opacity="0.16" />
+      <circle r="1.8" fill="var(--c-ret-core)" />
     </g>
     <g>
       <animateMotion dur="1.3s" begin="0.84s" repeatCount="indefinite" path="M320 245 H192" />
-      <circle r="3.5" fill="#5A6B88" opacity="0.16" />
-      <circle r="1.8" fill="#7A8CA8" />
+      <circle r="3.5" fill="var(--c-ret-glow)" opacity="0.16" />
+      <circle r="1.8" fill="var(--c-ret-core)" />
     </g>
     <g>
       <animateMotion dur="1.3s" begin="0.98s" repeatCount="indefinite" path="M190 295 H320" />
-      <circle r="4" fill="#3EF08C" opacity="0.20" />
-      <circle r="2" fill="#3EF08C" />
+      <circle r="4" fill="var(--c-green)" opacity="0.20" />
+      <circle r="2" fill="var(--c-green)" />
     </g>
     <g>
       <animateMotion dur="1.5s" begin="1.12s" repeatCount="indefinite" path="M480 285 L568 135" />
-      <circle r="4" fill="#3EF08C" opacity="0.20" />
-      <circle r="2" fill="#3EF08C" />
+      <circle r="4" fill="var(--c-green)" opacity="0.20" />
+      <circle r="2" fill="var(--c-green)" />
     </g>
     <g>
       <animateMotion dur="1.5s" begin="1.26s" repeatCount="indefinite" path="M568 160 L482 305" />
-      <circle r="3.5" fill="#5A6B88" opacity="0.16" />
-      <circle r="1.8" fill="#7A8CA8" />
+      <circle r="3.5" fill="var(--c-ret-glow)" opacity="0.16" />
+      <circle r="1.8" fill="var(--c-ret-core)" />
     </g>
     <g>
       <animateMotion dur="1.3s" begin="1.4s" repeatCount="indefinite" path="M480 315 L568 415" />
-      <circle r="4" fill="#3EF08C" opacity="0.20" />
-      <circle r="2" fill="#3EF08C" />
+      <circle r="4" fill="var(--c-green)" opacity="0.20" />
+      <circle r="2" fill="var(--c-green)" />
     </g>
     <g>
       <animateMotion dur="1.4s" begin="1.54s" repeatCount="indefinite" path="M568 445 L482 330" />
-      <circle r="3.5" fill="#5A6B88" opacity="0.16" />
-      <circle r="1.8" fill="#7A8CA8" />
+      <circle r="3.5" fill="var(--c-ret-glow)" opacity="0.16" />
+      <circle r="1.8" fill="var(--c-ret-core)" />
     </g>
     <g>
       <animateMotion dur="1.3s" begin="1.68s" repeatCount="indefinite" path="M320 330 H192" />
-      <circle r="3.5" fill="#5A6B88" opacity="0.16" />
-      <circle r="1.8" fill="#7A8CA8" />
+      <circle r="3.5" fill="var(--c-ret-glow)" opacity="0.16" />
+      <circle r="1.8" fill="var(--c-ret-core)" />
     </g>
   </g>
 
   <g>
-    <rect x="40" y="40" width="100" height="40" rx="6" fill="#101A2E" stroke="#3A4A63" stroke-width="1.2" />
-    <circle class="blink" cx="132" cy="60" r="3" fill="#3EF08C" />
+    <rect x="40" y="40" width="100" height="40" rx="6" fill="var(--c-node)" stroke="var(--c-node-line)" stroke-width="1.2" />
+    <circle class="blink" cx="132" cy="60" r="3" fill="var(--c-green)" />
     <text class="nodeText" x="90" y="65" text-anchor="middle">节点 A</text>
   </g>
   <g>
-    <rect x="190" y="40" width="120" height="44" rx="6" fill="#101A2E" stroke="#3A4A63" stroke-width="1.2" />
-    <circle class="blink" cx="302" cy="62" r="3" fill="#3EF08C" />
+    <rect x="190" y="40" width="120" height="44" rx="6" fill="var(--c-node)" stroke="var(--c-node-line)" stroke-width="1.2" />
+    <circle class="blink" cx="302" cy="62" r="3" fill="var(--c-green)" />
     <text class="nodeText" x="250" y="59" text-anchor="middle">节点 B</text>
     <text class="nodeSub" x="250" y="76" text-anchor="middle">副标</text>
   </g>
   <g>
-    <rect x="40" y="200" width="150" height="120" rx="6" fill="#101A2E" stroke="#3A4A63" stroke-width="1.2" />
-    <circle class="blink" cx="182" cy="260" r="3" fill="#3EF08C" />
+    <rect x="40" y="200" width="150" height="120" rx="6" fill="var(--c-node)" stroke="var(--c-node-line)" stroke-width="1.2" />
+    <circle class="blink" cx="182" cy="260" r="3" fill="var(--c-green)" />
     <text class="nodeText" x="115" y="242" text-anchor="middle">节点 C</text>
     <text class="nodeSub" x="115" y="261" text-anchor="middle">副标</text>
     <text class="nodeAccent" x="115" y="300" text-anchor="middle">子组件</text>
     <text class="nodeSub" x="115" y="318" text-anchor="middle">说明</text>
   </g>
   <g class="pulse">
-    <rect x="320" y="190" width="160" height="140" rx="6" fill="#0E2B1F" stroke="#3EF08C" stroke-width="1.4" />
-    <circle cx="472" cy="260" r="3" fill="#3EF08C" />
+    <rect x="320" y="190" width="160" height="140" rx="6" fill="var(--c-core)" stroke="var(--c-green)" stroke-width="1.4" />
+    <circle cx="472" cy="260" r="3" fill="var(--c-green)" />
     <text class="nodeText" x="400" y="255" text-anchor="middle">核心节点</text>
     <text class="nodeSub" x="400" y="273" text-anchor="middle">核心组件</text>
   </g>
   <g>
-    <rect x="570" y="70" width="140" height="100" rx="6" fill="#101A2E" stroke="#3A4A63" stroke-width="1.2" />
-    <circle class="blink" cx="702" cy="120" r="3" fill="#3EF08C" />
+    <rect x="570" y="70" width="140" height="100" rx="6" fill="var(--c-node)" stroke="var(--c-node-line)" stroke-width="1.2" />
+    <circle class="blink" cx="702" cy="120" r="3" fill="var(--c-green)" />
     <text class="nodeText" x="640" y="115" text-anchor="middle">节点 D</text>
     <text class="nodeSub" x="640" y="133" text-anchor="middle">副标</text>
   </g>
   <g>
-    <rect x="570" y="400" width="140" height="60" rx="6" fill="#101A2E" stroke="#3A4A63" stroke-width="1.2" />
-    <circle class="blink" cx="702" cy="430" r="3" fill="#3EF08C" />
+    <rect x="570" y="400" width="140" height="60" rx="6" fill="var(--c-node)" stroke="var(--c-node-line)" stroke-width="1.2" />
+    <circle class="blink" cx="702" cy="430" r="3" fill="var(--c-green)" />
     <text class="nodeText" x="640" y="425" text-anchor="middle">节点 E</text>
     <text class="nodeSub" x="640" y="443" text-anchor="middle">副标</text>
   </g>
@@ -175,4 +255,57 @@
   <text class="labGreen" x="525" y="372" text-anchor="middle">去程 11</text>
   <text class="labMuted" x="525" y="395" text-anchor="middle">返回 12</text>
   <text class="labMuted" x="255" y="323" text-anchor="middle">返回 13</text>
+
+  <!-- 明暗主题切换按钮（浏览器直接打开 SVG 时可用；作为 <img> 引用时 JS 不执行，但仍跟随系统） -->
+  <mask id="moonMask">
+    <circle cx="653" cy="20" r="5" fill="white" />
+    <circle cx="655" cy="18.5" r="4" fill="black" />
+  </mask>
+  <g id="themeBtn" class="themeBtn" role="button" tabindex="0" aria-label="切换明暗主题">
+    <rect x="640" y="8" width="26" height="24" rx="12" fill="var(--c-node)" stroke="var(--c-node-line)" stroke-width="1.2" />
+    <g id="iconSun" stroke="var(--c-text)" stroke-width="1.4" stroke-linecap="round" fill="none">
+      <circle cx="653" cy="20" r="3" />
+      <line x1="653" y1="15.5" x2="653" y2="13.5" />
+      <line x1="653" y1="24.5" x2="653" y2="26.5" />
+      <line x1="648.5" y1="20" x2="646.5" y2="20" />
+      <line x1="657.5" y1="20" x2="659.5" y2="20" />
+      <line x1="650.8" y1="17.8" x2="649.4" y2="16.4" />
+      <line x1="655.2" y1="22.2" x2="656.6" y2="23.6" />
+      <line x1="655.2" y1="17.8" x2="656.6" y2="16.4" />
+      <line x1="650.8" y1="22.2" x2="649.4" y2="23.6" />
+    </g>
+    <circle id="iconMoon" cx="653" cy="20" r="5" fill="var(--c-text)" mask="url(#moonMask)" />
+  </g>
+  <script><![CDATA[
+    (function () {
+      var root = document.documentElement;
+      function isLight() {
+        var t = root.getAttribute('data-theme');
+        if (t === 'light') return true;
+        if (t === 'dark') return false;
+        return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+      }
+      function update() {
+        var sun = document.getElementById('iconSun');
+        var moon = document.getElementById('iconMoon');
+        if (sun && moon) {
+          var light = isLight();
+          sun.style.display = light ? '' : 'none';
+          moon.style.display = light ? 'none' : '';
+        }
+      }
+      var btn = document.getElementById('themeBtn');
+      if (btn) btn.addEventListener('click', function () {
+        root.setAttribute('data-theme', isLight() ? 'dark' : 'light');
+        update();
+      });
+      var mql = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
+      if (mql && mql.addEventListener) {
+        mql.addEventListener('change', function () {
+          if (!root.getAttribute('data-theme')) update();
+        });
+      }
+      update();
+    })();
+  ]]></script>
 </svg>
